@@ -1,105 +1,133 @@
 import java.io.File;
 import java.io.IOException;
 
+// shell commands handler
 public class ShellCommandHandler {
-        private File currentDirectory;
+    private File myDir;  
 
-        public ShellCommandHandler() {
-            currentDirectory = new File(System.getProperty("user.dir"));
+    // constructor
+    public ShellCommandHandler() {
+        myDir = new File(System.getProperty("user.dir"));
+    }
+
+    public void printWorkingDirectory() {
+        System.out.println(myDir.getAbsolutePath());
+    }
+
+    public void listDirectory() {
+       // get all files
+       File[] files = myDir.listFiles();
+       
+       // check if there are files
+       if(files != null) {
+         for(int i = 0; i < files.length; i++) {
+           if(files[i].isDirectory()) {
+             System.out.println("[DIR] " + files[i].getName());
+           }
+           else {
+             System.out.println("[FILE] " + files[i].getName());
+           }
+         }
+       }
+       else {
+           System.out.println("Empty folder or can't read");
+       }
+    }
+
+    public void changeDirectory(String folder) {
+        if(folder == null) {
+            System.out.println("Usage: cd [directory_name]");
+            return;
+        } 
+        
+        if (folder.equals("..")) {
+          // go to parent folder
+          File parent = myDir.getParentFile();
+          if(parent != null) {
+              myDir = parent;
+              System.out.println("You are now in: " + myDir.getAbsolutePath());
+          }
+          else {
+              System.out.println("No parent folder exists");
+          }
         }
-
-        public void printWorkingDirectory() {
-            System.out.println(currentDirectory.getAbsolutePath());
-        }
-
-        public void listDirectory() {
-            File[] files = currentDirectory.listFiles();
-            if (files != null) {
-                for (int i = 0; i < files.length; i++) {
-                    if (files[i].isDirectory()) {
-                        System.out.println("[DIR] " + files[i].getName());
-                    } else {
-                        System.out.println("[FILE] " + files[i].getName());
-                    }
-                }
-            }
-        }
-
-        public void changeDirectory(String name) {
-            if (name == null) {
-                System.out.println("Usage: cd [directory_name]");
-            } else if (name.equals("..")) {
-                File parent = currentDirectory.getParentFile();
-                if (parent != null) {
-                    currentDirectory = parent;
-                } else {
-                    System.out.println("No parent directory");
-                }
-            } else {
-                File newDir = new File(currentDirectory, name);
-                if (newDir.exists() && newDir.isDirectory()) {
-                    currentDirectory = newDir;
-                } else {
-                    System.out.println("Directory not found: " + name);
-                }
-            }
-        }
-
-        public void makeDirectory(String name) {
-            if (name == null) {
-                System.out.println("Usage: mkdir [directory_name]");
-            } else {
-                File dir = new File(currentDirectory, name);
-                if (dir.exists()) {
-                    System.out.println("Directory already exists.");
-                } else {
-                    boolean made = dir.mkdir();
-                    if (made) {
-                        System.out.println("Directory created: " + name);
-                    } else {
-                        System.out.println("Failed to create directory.");
-                    }
-                }
-            }
-        }
-
-        public void createFile(String name) {
-            if (name == null) {
-                System.out.println("Usage: touch [file_name]");
-            } else {
-                File file = new File(currentDirectory, name);
-                if (file.exists()) {
-                    System.out.println("File already exists.");
-                } else {
-                    try {
-                        boolean made = file.createNewFile();
-                        if (made) {
-                            System.out.println("File created: " + name);
-                        } else {
-                            System.out.println("Failed to create file: " + name);
-                        }
-                    } catch (IOException e) {
-                        System.out.println("Failed to create file: " + name);
-                        System.out.println("Error details: " + e.getMessage());
-                    }
-                }
-            }
-        }
-
-        public void printHelp() {
-            System.out.println("Available commands:");
-            System.out.println("pwd - Print the current working directory");
-            System.out.println("ls - List all files and directories in the current directory");
-            System.out.println("cd [dir] - Change directory to [dir] or '..' to go up");
-            System.out.println("mkdir [name] - Create a new directory with the given name");
-            System.out.println("touch [name] - Create a new empty file with the given name");
-            System.out.println("help - Show this help information");
-            System.out.println("exit - Exit the shell");
-        }
-
-        public File getCurrentDirectory() {
-            return currentDirectory;
+        else {
+          // go to specified folder
+          File newFolder = new File(myDir, folder);
+          if(newFolder.exists() && newFolder.isDirectory()) {
+              myDir = newFolder;
+              System.out.println("You are now in: " + myDir.getAbsolutePath());
+          }
+          else {
+              System.out.println("Can't find that folder: " + folder);
+          }
         }
     }
 
+    public void makeDirectory(String name) {
+        // make new directory
+        if(name == null) {
+            System.out.println("Usage: mkdir [directory_name]");
+            return;
+        }
+        
+        File newFolder = new File(myDir, name);
+        
+        if(newFolder.exists()) {
+            System.out.println("That folder already exists!");
+        }
+        else {
+            boolean result = newFolder.mkdir();
+            if(result) {
+                System.out.println("Made new folder: " + name);
+            }
+            else {
+                System.out.println("Couldn't make the folder");
+            }
+        }
+    }
 
+    public void createFile(String name) {
+        // make new file
+        if (name == null) {
+            System.out.println("Usage: touch [file_name]");
+            return;
+        }
+        
+        File newFile = new File(myDir, name);
+        
+        if (newFile.exists()) {
+            System.out.println("That file already exists!");
+            return;
+        }
+        
+        try {
+            boolean result = newFile.createNewFile();
+            if (result) {
+                System.out.println("Made new file: " + name);
+            } 
+            else {
+                System.out.println("Couldn't make the file");
+            }
+        } 
+        catch (IOException e) {
+            System.out.println("Error making file!");
+        }
+    }
+
+    public void printHelp() {
+        // print all commands
+        System.out.println("Commands you can use:");
+        System.out.println("pwd = see current folder");
+        System.out.println("ls = list files");
+        System.out.println("cd [folder] = change folder");
+        System.out.println("mkdir [name] = make new folder");
+        System.out.println("touch [name] = make new file");
+        System.out.println("help = see this message");
+        System.out.println("exit = quit program");
+    }
+
+    public File getCurrentDirectory() {
+        return myDir;
+    }
+}
