@@ -2,26 +2,20 @@ import java.util.Scanner;
 
 public class MiniShell {
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
         ShellCommandHandler handler = new ShellCommandHandler();
 
         System.out.println("Welcome to MiniShell! Type 'help' for a list of commands.");
 
-        while (true) {
+   while (true) {
             System.out.print(handler.getCurrentDirectory().getAbsolutePath() + " > ");
-            String line = scanner.nextLine();
-            String command = "";
-            String argument = null;
-
-            int spaceIndex = line.indexOf(" ");
-            if (spaceIndex == -1) {
-                command = line;
-            } else {
-                command = line.substring(0, spaceIndex);
-                argument = line.substring(spaceIndex + 1);
-            }
-
+            String input = scanner.nextLine().trim();
+            String[] parts = input.split(" ", 2);
+            String command = parts[0];
+            String argument = parts.length > 1 ? parts[1] : null;
+       
+// ----------------------------------------------
+       
             if (command.equals("pwd")) {
                 handler.printWorkingDirectory();
             } else if (command.equals("ls")) {
@@ -41,7 +35,12 @@ public class MiniShell {
                 System.out.println("Unknown command. Type 'help' to see available commands.");
             }
         }
+                 // Your code should call the appropriate methods from the ShellCommandHandler class
 
-        scanner.close();
+            if (command.equals("exit")) {
+                System.out.println("Goodbye!");
+                return;
+            }
+        }
     }
 }
