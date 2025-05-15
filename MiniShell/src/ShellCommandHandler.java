@@ -7,12 +7,13 @@ public class ShellCommandHandler {
         public ShellCommandHandler() {
             currentDirectory = new File(System.getProperty("user.dir"));
         }
-
+// ----------------[1] printWorkingDirectory-----------------
         public void printWorkingDirectory() {
             System.out.println(currentDirectory.getAbsolutePath());
         }
         
-// -----------------------
+// ---------------- [2] listDirectory ----------------------
+
         
         public void listDirectory() {
             File[] files = currentDirectory.listFiles();
@@ -27,7 +28,8 @@ public class ShellCommandHandler {
             }
         }
 
-        // ----------------------------
+        // ---------- [3] changeDirectory ----------
+
         
         public void changeDirectory(String name) {
             if (name == null) {
@@ -49,7 +51,8 @@ public class ShellCommandHandler {
             }
         }
         
-// -------------------------------------
+// ---------------------- [4] makeDirectory ----------
+
         
         public void makeDirectory(String name) {
             if (name == null) {
@@ -69,7 +72,7 @@ public class ShellCommandHandler {
             }
         }
 
-        // ----------------------------------------------------------------
+        // ---------------------[5] createFile------------------------
 
         public void createFile(String name) {
             if (name == null) {
@@ -94,7 +97,7 @@ public class ShellCommandHandler {
             }
         }
 
-        // -------------------------------------------------------------
+        // ----------------------------- [6] printHelp--------------------------------
 
         public void printHelp() {
             System.out.println("Available commands:");
