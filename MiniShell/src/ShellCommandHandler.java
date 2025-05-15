@@ -69,6 +69,8 @@ public class ShellCommandHandler {
             }
         }
 
+        // ----------------------------------------------------------------
+
         public void createFile(String name) {
             if (name == null) {
                 System.out.println("Usage: touch [file_name]");
@@ -91,6 +93,8 @@ public class ShellCommandHandler {
                 }
             }
         }
+
+        // -------------------------------------------------------------
 
         public void printHelp() {
             System.out.println("Available commands:");
