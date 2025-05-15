@@ -8,6 +8,9 @@ public class MiniShell {
 
         System.out.println("Welcome to MiniShell! Type 'help' for a list of commands.");
 
+        // Main loop: waits for user commands
+
+        
         while (true) {
             System.out.print(handler.getCurrentDirectory().getAbsolutePath() + " > ");
             String line = scanner.nextLine();
