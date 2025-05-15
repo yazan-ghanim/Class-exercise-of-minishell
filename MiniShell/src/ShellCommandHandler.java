@@ -11,7 +11,9 @@ public class ShellCommandHandler {
         public void printWorkingDirectory() {
             System.out.println(currentDirectory.getAbsolutePath());
         }
-
+        
+// -----------------------
+        
         public void listDirectory() {
             File[] files = currentDirectory.listFiles();
             if (files != null) {
@@ -25,6 +27,8 @@ public class ShellCommandHandler {
             }
         }
 
+        // ----------------------------
+        
         public void changeDirectory(String name) {
             if (name == null) {
                 System.out.println("Usage: cd [directory_name]");
@@ -44,7 +48,9 @@ public class ShellCommandHandler {
                 }
             }
         }
-
+        
+// -------------------------------------
+        
         public void makeDirectory(String name) {
             if (name == null) {
                 System.out.println("Usage: mkdir [directory_name]");
